@@ -24,6 +24,7 @@ iree_cc_library(
   DEPS
     absl::flags
     iree::hal::api
+    iree::hal::local::loaders::embedded_library_loader
     iree::hal::local::loaders::legacy_library_loader
     iree::hal::local::task_driver
   DEFINES
