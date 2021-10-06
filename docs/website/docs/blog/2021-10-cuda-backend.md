@@ -2,7 +2,8 @@
 # CUDA Backend in IREE
 
 Historically IREE only supported CPU and SPIR-V backend. In February 2021 IREE
-started adding a CUDA backend to its toolchain.
+started adding a CUDA backend to its toolchain. This allowed us to evaluate how
+easy it is to add a new target to IREE.
 
 ## Bring up
 
@@ -11,12 +12,12 @@ started adding a CUDA backend to its toolchain.
 IREE has a [HAL API](https://github.com/google/iree/blob/main/docs/developers/design_roadmap.md#hal-hardware-abstraction-layer-and-multi-architecture-executables)
 that abstract all the targets behind a common interface. The first to support
 CUDA target was to map HAL API onto CUDA. We use CUDA driver API to reduce
-dependency and be close to the hardware. The API is close to a typical GPU API
-and exposes memory allocations, basic fill and memset commands as well as kernel
-dispatch, general command buffer handling. The original implementation uses
-[CUDA graph API](https://developer.nvidia.com/blog/cuda-graphs/) as a graph maps
-naturally to a command buffer. There is also an implementation using CUDA stream
-for comparison.
+dependency and be close to the hardware. The API is close to a typical GPU APIs 
+so it was a natural fit for CUDA. HAL API exposes memory allocations, basic fill
+and memset commands as well as kernel dispatch, general command buffer handling.
+The original implementation uses [CUDA graph API](https://developer.nvidia.com/blog/cuda-graphs/)
+as a graph maps naturally to a command buffer. There is also an implementation
+using CUDA stream for comparison. 
 
 HAL exposes an API that can be tested independently, even if we are not able to
 create CUDA kernels yet we can test a large portion of the CUDA driver using
@@ -40,6 +41,8 @@ regions that are processed by NVVM Codegen. A simple implementation of the
 compiler is to run bufferization and convert linalg to standard followed by
 conversion to NVVM/LLVM. Most of those transformation can re-use upstream MLIR
 transformations and share it with any other backend targeting LLVM IR.
+Leveraging MLIR conversion to LLVM will allow us to quickly go from a simple
+"hello world" to supporting full models.
 
 IREE code generation is based on MLIR infrastructure so each step can easily be
 tested independently using the MLIR lit framework.
@@ -76,7 +79,9 @@ describe [here](https://github.com/google/iree/blob/main/docs/developers/design_
 
 ## Performance
 
-Now that we have enable functionality we need to look at the performance.
+Now that we have enable functionality we need to look at the performance. Once
+again we an leverage existing MLIR transformations to speed up the developement
+work.
 
 ### Tiling and distribution
 
@@ -155,12 +160,16 @@ Those different transformations compose to this flow:
 
 The full dump step by step of a linalg.matmul operation can be found [here](https://gist.github.com/ThomasRaoux/8bded9d7c3f7426fc1ca8598deb53220).
 
-## Results
+## Results and next steps
 
 ### GEMM
 
 We compare the performance of a single GEMM operation to highly optimized
-library cuBlas. 
+library cuBlas using [mmperf framework](https://github.com/mmperf/mmperf). 
+
 ![Compilation diagram](./2021-10-cuda-memperf.png)
 
-### Bert
+### Models
+
+Several models are running and we will publish more detailed benchmark results
+in the near future.
