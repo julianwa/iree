@@ -169,7 +169,17 @@ library cuBlas using [mmperf framework](https://github.com/mmperf/mmperf).
 
 ![Compilation diagram](./2021-10-cuda-memperf.png)
 
-### Models
+The graph can be re-produced based on [instructions on mmperf](https://github.com/mmperf/mmperf#compare-mmperf-results-among-different-backends)
+
+### Future work
+
+[Nod.ai](https://nod.ai/) has contributed an experimental HAL module for [ROCM](https://rocmdocs.amd.com/)
+that allows us to re-use the compiler parts to support ROCM, more support is
+going to be added in the future.
+
+Several performance improvements are still under progress, including optimizing
+the runtime allocator to reduce the host-side overhead and tuning tile sizes
+based profiling.
 
 Several models are running and we will publish more detailed benchmark results
 in the near future.
