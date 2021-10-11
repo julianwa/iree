@@ -4,12 +4,6 @@
 IREE is being designed with re-targetability as a core goal: it should be possible to use IREE to target a broad spectrum of power regimes, from embedded systems to distributed clusters; and it should be possible to extend IREE to target new back-ends without having to reinvent the wheel each time. 
 
 To explore this, we recently branched out from our initial focus on low-latency mobile deployments with a goal of using IREE to target data center workloads on Nvidia CUDA. This post describes how we quickly brought up a CUDA back-end for IREE and used it to train BERT, then shares some metrics and next steps.
-After our initial focus on low latency mobile deployments we took it on
-ourselves to target data center workloads on Nvidia CUDA. We believe the IREE
-architecture will shine on extensibility. The HAL layer provided a nice
-abstraction to implement the CUDA specifics below. Read on for more detail on
-how we went about the port and was able to successfully train BERT on CUDA
-devices.
 
 ## Bring up
 
