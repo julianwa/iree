@@ -1,9 +1,13 @@
 
 # CUDA Backend in IREE
 
-Historically IREE only supported CPU and SPIR-V backend. In February 2021 IREE
-started adding a CUDA backend to its toolchain. This allowed us to evaluate how
-easy it is to add a new target to IREE.
+IREE is being designed to scale from embedded systems to distributed clusters.
+After our initial focus on low latency mobile deployments we took it on
+ourselves to target data center workloads on Nvidia CUDA. We believe the IREE
+architecture will shine on extensibility. The HAL layer provided a nice
+abstraction to implement the CUDA specifics below. Read on for more detail on
+how we went about the port and was able to successfully train BERT on CUDA
+devices.
 
 ## Bring up
 
